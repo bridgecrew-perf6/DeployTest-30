@@ -6,14 +6,14 @@ ENV ASPNETCORE_URLS=http://+:5000
 #USER appuser
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR /src
-COPY ["bankTest.csproj", "./"]
-RUN dotnet restore "bankTest.csproj"
+COPY ["DeployTest.csproj", "./"]
+RUN dotnet restore "DeployTest.csproj"
 COPY . .
 #WORKDIR "/src/."
-RUN dotnet build "bankTest.csproj" -c Release -o /app/build
+RUN dotnet build "DeployTest.csproj" -c Release -o /app/build
 FROM build AS publish
-RUN dotnet publish "bankTest.csproj" -c Release -o /app/publish
+RUN dotnet publish "DeployTest.csproj" -c Release -o /app/publish
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "bankTest.dll"]
+ENTRYPOINT ["dotnet", "DeployTest.dll"]
